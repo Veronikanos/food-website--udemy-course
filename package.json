@@ -1,0 +1,19 @@
+{
+  "name": "food-website--udemy-course",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Veronikanos/food-website--udemy-course.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Veronikanos/food-website--udemy-course/issues"
+  },
+  "homepage": "https://github.com/Veronikanos/food-website--udemy-course#readme"
+}

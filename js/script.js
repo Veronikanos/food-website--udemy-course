@@ -126,4 +126,46 @@ window.addEventListener('DOMContentLoaded', () => {
     document.addEventListener('keydown', (e)=>{
         if (e.code === "Escape") toggleModal()
     })
+
+
+    class Menu {
+        constructor(item, selector){
+            this.image = item.img;
+            this.alt = item.alt;
+            this.subtitle = item.subtitle;
+            this.description = item.description;
+            this.price = item.price;
+            this.selector = document.querySelector(selector)
+        }
+
+        createMarkup(){
+            return `<div class="menu__item">
+            <img src=${this.image} alt=${this.alt}>
+            <h3 class="menu__item-subtitle">${this.subtitle}</h3>
+            <div class="menu__item-descr">${this.description}</div>
+            <div class="menu__item-divider"></div>
+            <div class="menu__item-price">
+                <div class="menu__item-cost">Цена:</div>
+                <div class="menu__item-total"><span>${this.price}</span> грн/день</div>
+            </div>`
+        }
+
+        renderCards(){
+            this.selector.insertAdjacentHTML("beforeend", this.createMarkup())
+        }
+    }
+
+
+    // Cards
+    fetch('../assets/cards.json')
+    .then(response => response.json())
+    .then(data => {
+      data.forEach(menu => {
+            const card = new Menu(menu, ".cards-container");
+            card.renderCards();
+      })
+    })
+    .catch(error => {
+      console.error('Помилка завантаження JSON:', error);
+    });
 });
