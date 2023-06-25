@@ -105,26 +105,32 @@ window.addEventListener('DOMContentLoaded', () => {
 
   // Modal
   const openModalBtn = document.querySelectorAll('[data-modal]');
-  const closeModalBtn = document.querySelector('[data-close]');
   const modal = document.querySelector('.modal')
 
 
-  const toggleModal =()=>{
-    modal.classList.toggle('show');
-  }
+  function closeModal() {
+    modal.classList.add('hide');
+    modal.classList.remove('show');
+    document.body.style.overflow = '';
+}
+
+function openModal() {
+    modal.classList.add('show');
+    modal.classList.remove('hide');
+    document.body.style.overflow = 'hidden';
+    // clearInterval(modalTimerId);
+}
 
     openModalBtn.forEach(btn => {
-        btn.addEventListener('click', toggleModal);
+        btn.addEventListener('click', openModal);
     });
 
-    closeModalBtn.addEventListener('click', toggleModal)
-
     modal.addEventListener('click', (e) =>{
-        if (e.target === modal) toggleModal()
+        if (e.target === modal || e.target.getAttribute('data-close') == '') closeModal()
     })
 
     document.addEventListener('keydown', (e)=>{
-        if (e.code === "Escape") toggleModal()
+        if (e.code === "Escape") closeModal()
     })
 
     // Cards
@@ -199,15 +205,14 @@ window.addEventListener('DOMContentLoaded', () => {
         })
 
         request.send(JSON.stringify(object));
-        
+
         request.addEventListener('load', () => {
             if (request.status === 200) {
                 console.log(request.response);
-                statusMessage.textContent = message.success;
+                showThanksModal(message.success);
+                statusMessage.remove();
+
                 form.reset();
-                setTimeout(() => {
-                    statusMessage.remove();
-                }, 2000);
             } else {
                 statusMessage.textContent = message.fail;
             }
@@ -218,4 +223,29 @@ window.addEventListener('DOMContentLoaded', () => {
     forms.forEach(item => {
         postData(item);
     })
+
+
+    function showThanksModal(message){
+        const prevModalDialog = document.querySelector('.modal__dialog');
+
+        prevModalDialog.classList.add('hide');
+        openModal();
+        
+        const thanksModal = document.createElement('div');
+        thanksModal.classList.add('modal__dialog');
+        thanksModal.innerHTML = `
+        <div class="modal__content">
+            <div data-close="" class="modal__close">×</div>
+            <div class="modal__title">Мы скоро с Вами свяжемся!</div>
+        </div>
+        `;
+
+        document.querySelector('.modal').append(thanksModal);
+        setTimeout(()=>{
+            thanksModal.remove();
+            prevModalDialog.classList.add('show');
+            prevModalDialog.classList.remove('hide');
+            closeModal();
+        }, 4000)
+    }
 });
