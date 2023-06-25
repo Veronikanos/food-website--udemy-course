@@ -127,14 +127,14 @@ window.addEventListener('DOMContentLoaded', () => {
         if (e.code === "Escape") toggleModal()
     })
 
-
+    // Cards
     class Menu {
-        constructor(item, selector){
-            this.image = item.img;
-            this.alt = item.alt;
-            this.subtitle = item.subtitle;
-            this.description = item.description;
-            this.price = item.price;
+        constructor({img, alt, subtitle, description, price}, selector){
+            this.image = img;
+            this.alt = alt;
+            this.subtitle = subtitle;
+            this.description = description;
+            this.price = price;
             this.selector = document.querySelector(selector)
         }
 
@@ -155,8 +155,6 @@ window.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-
-    // Cards
     fetch('../assets/cards.json')
     .then(response => response.json())
     .then(data => {
@@ -168,4 +166,56 @@ window.addEventListener('DOMContentLoaded', () => {
     .catch(error => {
       console.error('Помилка завантаження JSON:', error);
     });
+
+    // Forms
+
+    const forms = document.querySelectorAll('form');
+
+    const message = {
+        loading: "Loading...",
+        success: "All is ok!",
+        fail: "Something went wrong!"
+    }
+
+
+    const postData = (form) => {
+        form.addEventListener('submit', (e)=>{
+        e.preventDefault();
+
+        const statusMessage = document.createElement('div');
+        statusMessage.classList.add('status');
+        statusMessage.textContent = message.loading;
+        form.append(statusMessage)
+
+        const request = new XMLHttpRequest();
+        request.open('POST', 'server.php');
+        request.setRequestHeader('Content-type', 'application/json')
+
+        const formData = new FormData(form);
+
+        const object = {};
+        formData.forEach((value, key) => {
+            object[key] = value;
+        })
+
+        request.send(JSON.stringify(object));
+        
+        request.addEventListener('load', () => {
+            if (request.status === 200) {
+                console.log(request.response);
+                statusMessage.textContent = message.success;
+                form.reset();
+                setTimeout(() => {
+                    statusMessage.remove();
+                }, 2000);
+            } else {
+                statusMessage.textContent = message.fail;
+            }
+        })
+    }) 
+    }
+
+    forms.forEach(item => {
+        postData(item);
+    })
 });
