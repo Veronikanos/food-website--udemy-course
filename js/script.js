@@ -291,6 +291,7 @@ window.addEventListener('DOMContentLoaded', () => {
   for (let i = 0; i < allSlides.length; i++){
     const dot = document.createElement('li');
     dot.setAttribute('data-slide-to', i + 1);
+
     dot.style.cssText = `
     box-sizing: content-box;
     flex: 0 1 auto;
@@ -335,7 +336,7 @@ window.addEventListener('DOMContentLoaded', () => {
     return num.toString().padStart(2, '0');
   }
 
-  const WIDTH = +width.slice(0, -2);
+  const WIDTH = +width.replace(/\D/g, '');
 
   next.addEventListener('click', () => {
     if (sliderIndex >= allSlides.length) {
