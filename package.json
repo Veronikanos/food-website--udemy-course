@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/Veronikanos/food-website--udemy-course/issues"
   },
-  "homepage": "https://github.com/Veronikanos/food-website--udemy-course#readme"
+  "homepage": "https://github.com/Veronikanos/food-website--udemy-course#readme",
+  "devDependencies": {
+    "json-server": "^0.17.3"
+  }
 }
