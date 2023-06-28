@@ -1,7 +1,6 @@
 // Timer
 
-function timer() {
-  const deadline = '2023-07-30';
+function timer(id, deadline) {
 
   const getRemainingTime = (deadline) => {
     let days, hours, minutes, seconds;
@@ -63,6 +62,6 @@ function timer() {
     const startTimer = setInterval(updateClock, 1000);
   };
 
-  setClock('.timer', deadline);
+  setClock(id, deadline);
 }
 export default timer;
